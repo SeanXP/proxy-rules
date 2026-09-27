@@ -26,7 +26,7 @@ Clash 与 Shadowrocket 只统一 `SELECT / AI / Media` 等策略语义、地区�
 | 3 | OpenAI 和 AI 补充规则（含 Claude） | `AI` | 使用适合 AI 服务的出口。 |
 | 4 | Crypto | `SG` | 使用固定地区，不增加中转策略组。 |
 | 5 | Apple | `DIRECT` | 优先于 Media 和 Global 处理重叠域名。 |
-| 6 | GlobalMedia（含 Netflix 域名） | `Media` | 独立选择流媒体出口。 |
+| 6 | Sukka stream | `Media` | 独立选择流媒体出口。 |
 | 7 | Global | `SELECT` | 代理明确的国外通用流量。 |
 | 8 | 其他未命中流量 | `DIRECT` | 家庭网络默认兜底。 |
 
@@ -34,7 +34,7 @@ Clash 与 Shadowrocket 只统一 `SELECT / AI / Media` 等策略语义、地区�
 
 - `SELECT`：通用代理入口，第一选项为机场 HK，也可以手动切换到其他地区、VPS 或 DIRECT；VPS 只作为手动兜底，不做自动故障转移。
 - `AI`：AI 服务入口，先列出名称包含 `vps` 且带独立 `us`/`usa` 字样的美国出口自建节点（如 `vps-us`、`vps-hk-us`），之后是机场 US。
-- `Media`：流媒体入口，可以跟随 SELECT，也可以指定地区或 DIRECT。
+- `Media`：流媒体入口，可以跟随 SELECT，也可以指定地区或 DIRECT。规则使用只含流媒体的 Sukka stream；不用 blackmatrix7 GlobalMedia，因为它合并了 ACL4SSR ProxyMedia 中的 AI 域名（含 Gemini 等 Google AI 服务）。YouTube 属于 Google，Media 切到其他地区时 YouTube 与 Google 账号页面出口会不同。
 - `VPS`：名称带有 `vps` 的全部自建节点，作为 SELECT 的手动兜底。
 - `HK`、`US`：排除名称中带有 `vps` 的节点，只在对应机场节点之间自动测速；`US` 只匹配独立的 `US`/`USA` 字样，避免误匹配 `AUS`、`RUS`、`USDT` 等。
 - `SG`、`JP`：按地区过滤节点并自动测速；所有地区组使用相同的检测地址和测速参数（`https://www.gstatic.com/generate_204`，间隔 600 秒、超时 5 秒、容差 50 ms）。
